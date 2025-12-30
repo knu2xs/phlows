@@ -312,8 +312,9 @@ export class RiverDetailComponent implements OnInit {
     const date = new Date(this.currentFlowTime);
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
+    const dayOfWeek = date.toLocaleString('en-US', { weekday: 'short' });
     const day = String(date.getDate()).padStart(2, '0');
     const month = date.toLocaleString('en-US', { month: 'short' });
-    return `${hours}:${minutes} ${day} ${month}`;
+    return `${hours}:${minutes} ${dayOfWeek} ${day} ${month}`;
   }
 }
