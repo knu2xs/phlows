@@ -38,6 +38,9 @@ jobs:
       - name: Build Angular project
         run: npm run build:prod
       
+      - name: Verify build output
+        run: ls -la dist/phlows/
+      
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

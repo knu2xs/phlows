@@ -7,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <script>
-        // This script redirects 404s back to the index.html
-        // It's needed for single-page apps on GitHub Pages
-        const path = window.location.pathname.replace(/^\/phlows/, '');
-        if (path !== '/' && !path.includes('.')) {
-            window.location.href = '/phlows/?redirect=' + encodeURIComponent(path);
+        // Redirect SPA 404s to index.html with the requested path as a query parameter
+        // This allows Angular Router to handle the routing
+        if (window.location.pathname !== '/phlows/' && !window.location.pathname.endsWith('.html')) {
+            const path = window.location.pathname.substring('/phlows/'.length);
+            const search = window.location.search;
+            window.location.replace('/phlows/?redirect=' + encodeURIComponent('/' + path) + search);
         }
     </script>
 </head>
