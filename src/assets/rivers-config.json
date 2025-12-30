@@ -41,14 +41,14 @@
       "description": "Popular commercial rafting and paddling section"
     },
     {
-      "id": "usgs_09072500",
-      "name": "Eagle River at Avon",
-      "location": "Avon, CO",
-      "gaugeId": "09072500",
-      "minRange": 300,
-      "maxRange": 2000,
-      "runnable": { "min": 500, "max": 1500 },
-      "description": "Technical mountain whitewater"
+      "id": "usgs_14238050",
+      "name": "East Fork Lewis River",
+      "location": "Heisson, WA",
+      "gaugeId": "14238050",
+      "minRange": 400,
+      "maxRange": 2500,
+      "runnable": { "min": 600, "max": 1800 },
+      "description": "Classic Northwest whitewater with iconic waterfalls and technical rapids"
     },
         {
       "id": "usgs_14236200",
