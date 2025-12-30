@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Phlows - River Flow Dashboard</title>
+    <base href="/phlows/">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <script>
+        // This script redirects 404s back to the index.html
+        // It's needed for single-page apps on GitHub Pages
+        const path = window.location.pathname.replace(/^\/phlows/, '');
+        if (path !== '/' && !path.includes('.')) {
+            window.location.href = '/phlows/?redirect=' + encodeURIComponent(path);
+        }
+    </script>
+</head>
+<body>
+    <app-root></app-root>
+</body>
+</html>
