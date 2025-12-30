@@ -177,11 +177,12 @@ export class RiverDetailComponent implements OnInit, OnDestroy {
       .y(d => yScale(d.flow));
 
     // Helper function to get color based on flow zone
+    const river = this.river; // Capture river in closure to satisfy TypeScript null check
     const getFlowColor = (flow: number): string => {
-      if (!this.river) return '#00d4ff'; // Default if river not loaded
-      if (flow < this.river.runnable.min) {
+      if (!river) return '#00d4ff'; // Default if river not loaded
+      if (flow < river.runnable.min) {
         return '#dc3545'; // Red - Too Low
-      } else if (flow > this.river.runnable.max) {
+      } else if (flow > river.runnable.max) {
         return '#ffc107'; // Yellow - Too High
       } else {
         return '#198754'; // Green - Runnable
