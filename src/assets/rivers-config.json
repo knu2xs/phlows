@@ -1,38 +1,6 @@
 {
   "rivers": [
     {
-      "id": "usgs_06752000",
-      "name": "South Platte River at Denver",
-      "location": "Denver, CO",
-      "gaugeId": "06752000",
-      "runnable": { "min": 1500, "max": 2500 },
-      "description": "Popular paddling destination through downtown Denver"
-    },
-    {
-      "id": "usgs_09058000",
-      "name": "Colorado River near Granby",
-      "location": "Granby, CO",
-      "gaugeId": "09058000",
-      "runnable": { "min": 1000, "max": 2000 },
-      "description": "Mountain river with consistent flow"
-    },
-    {
-      "id": "usgs_09085000",
-      "name": "Colorado River near Palisade",
-      "location": "Palisade, CO",
-      "gaugeId": "09085000",
-      "runnable": { "min": 1500, "max": 3000 },
-      "description": "Scenic canyon paddling section"
-    },
-    {
-      "id": "usgs_07083000",
-      "name": "Arkansas River at Canon City",
-      "location": "Canon City, CO",
-      "gaugeId": "07083000",
-      "runnable": { "min": 800, "max": 2500 },
-      "description": "Popular commercial rafting and paddling section"
-    },
-    {
       "id": "usgs_14238050",
       "name": "East Fork Lewis (EFL)",
       "location": "Heisson, WA",
@@ -55,6 +23,14 @@
       "gaugeId": "14237500",
       "runnable": { "min": 800, "max": 2500 },
       "description": "Classic whitewater creek with technical rapids and scenic canyon views"
+    },
+    {
+      "id": "usgs_12117600",
+      "name": "Cedar River",
+      "location": "Landsburg, WA",
+      "gaugeId": "12117600",
+      "runnable": { "min": 200, "max": 1200 },
+      "description": "Cedar slalom course"
     }
   ]
 }

@@ -106,11 +106,24 @@ export class DashboardComponent implements OnInit {
     return flow ? flow.toFixed(0) : '—';
   }
 
+  getFlowPercentage(river: River): number {
+    const flow = this.currentFlows[river.id] || 0;
+    const range = river.runnable.max - river.runnable.min;
+    if (range <= 0) return 0;
+    return ((flow - river.runnable.min) / range) * 100;
+  }
+
   getDisplayedRivers(): River[] {
-    if (!this.showOnlyRunnable) {
-      return this.rivers;
-    }
-    return this.rivers.filter(river => this.getStageStatus(river) === 'runnable');
+    let displayed = !this.showOnlyRunnable
+      ? this.rivers
+      : this.rivers.filter(river => this.getStageStatus(river) === 'runnable');
+    
+    // Sort by flow percentage (highest to lowest relative to runnable range)
+    return displayed.sort((a, b) => {
+      const percentA = this.getFlowPercentage(a);
+      const percentB = this.getFlowPercentage(b);
+      return percentB - percentA; // Descending order (highest to lowest)
+    });
   }
 
   toggleRunnableFilter(): void {
