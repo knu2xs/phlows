@@ -1,0 +1,90 @@
+<div class="container-fluid py-4">
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <h1 class="mb-0">Phlows</h1>
+      <p class="text-muted small">River Flow Dashboard</p>
+    </div>
+    <div class="col-md-6 d-flex align-items-center justify-content-md-end">
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="runnableFilter"
+          [checked]="showOnlyRunnable"
+          (change)="toggleRunnableFilter()"
+        />
+        <label class="form-check-label" for="runnableFilter">
+          Show Runnable Only
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="row">
+    <div class="col-12">
+      <div class="alert alert-info" role="alert">
+        <div class="spinner-border spinner-border-sm me-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        Loading river data...
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="row">
+    <div class="col-12">
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !error" class="row g-3">
+    <div *ngFor="let river of getDisplayedRivers()" class="col-12 col-md-6 col-lg-4">
+      <div class="card h-100 shadow-sm river-card" [routerLink]="['/river', river.id]">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start mb-2">
+            <div>
+              <h5 class="card-title mb-1">{{ river.name }}</h5>
+              <p class="card-subtitle text-muted small mb-2">{{ river.location }}</p>
+            </div>
+            <span class="badge" [ngClass]="getStatusBadgeClass(getStageStatus(river))">
+              {{ getStatusLabel(getStageStatus(river)) }}
+            </span>
+          </div>
+
+          <p class="card-text small mb-3">{{ river.description }}</p>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <div class="text-center p-2 bg-dark rounded">
+                <small class="d-block text-muted">Current Flow</small>
+                <div class="h5 mb-0">{{ getCurrentFlow(river) }} cfs</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center p-2 bg-dark rounded">
+                <small class="d-block text-muted">Runnable Range</small>
+                <div class="h6 mb-0">{{ river.runnable.min }} - {{ river.runnable.max }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress" style="height: 6px;">
+            <div
+              class="progress-bar"
+              [style.width.%]="
+                ((currentFlows[river.id] || river.runnable.min - river.minRange) - river.minRange) /
+                (river.maxRange - river.minRange) * 100
+              "
+              [style.background-color]="'var(--bs-' + (getStageStatus(river) === 'runnable' ? 'success' : getStageStatus(river) === 'tooHigh' ? 'warning' : 'danger') + ')'"
+            ></div>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-top-0">
+          <small class="text-muted">Click to view 48-hour flow graph →</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

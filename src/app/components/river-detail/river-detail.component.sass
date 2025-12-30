@@ -1,0 +1,34 @@
+.flow-chart-container
+  width: 100%
+  height: 500px
+  position: relative
+
+  svg
+    width: 100% !important
+    height: 100% !important
+
+.flow-tooltip
+  position: fixed
+  padding: 8px 12px
+  background-color: rgba(0, 0, 0, 0.9)
+  color: #00d4ff
+  border-radius: 4px
+  pointer-events: none
+  opacity: 0
+  font-size: 0.85rem
+  font-weight: 500
+  white-space: nowrap
+  z-index: 1000
+  transition: opacity 0.2s ease
+  border: 1px solid #00d4ff
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.3)
+
+  &.visible
+    opacity: 1
+
+.card
+  background-color: rgba(255, 255, 255, 0.05)
+  border: 1px solid rgba(255, 255, 255, 0.1) !important
+
+  .card-header
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important
