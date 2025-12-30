@@ -6,17 +6,15 @@
     <base href="/phlows/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <script>
-        // Redirect SPA 404s to index.html with the requested path as a query parameter
-        // This allows Angular Router to handle the routing
-        if (window.location.pathname !== '/phlows/' && !window.location.pathname.endsWith('.html')) {
-            const path = window.location.pathname.substring('/phlows/'.length);
-            const search = window.location.search;
-            window.location.replace('/phlows/?redirect=' + encodeURIComponent('/' + path) + search);
-        }
-    </script>
+    <meta http-equiv="refresh" content="0; url=/phlows/">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Fallback content for browsers that don't support meta refresh -->
+    <div class="container text-center py-5">
+        <h1>Loading...</h1>
+        <p><a href="/phlows/">Click here if you are not redirected</a></p>
+    </div>
     <app-root></app-root>
 </body>
 </html>
