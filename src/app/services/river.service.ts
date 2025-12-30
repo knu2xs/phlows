@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface River {
@@ -8,8 +8,6 @@ export interface River {
   name: string;
   location: string;
   gaugeId: string;
-  minRange: number;
-  maxRange: number;
   runnable: { min: number; max: number };
   description: string;
 }
@@ -19,12 +17,16 @@ export interface FlowData {
   flow: number;
 }
 
-export type StageStatus = 'tooLow' | 'runnable' | 'tooHigh';
+export type StageStatus = 'tooLow' | 'runnable' | 'tooHigh' | 'unknown';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RiverService {
+  // Cache for flow data with TTL (5 minutes)
+  private flowDataCache: { [gaugeId: string]: { data: FlowData[]; timestamp: number } } = {};
+  private readonly CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+
   constructor(private http: HttpClient) {}
 
   getRivers(): Observable<River[]> {
@@ -41,8 +43,15 @@ export class RiverService {
       );
   }
 
-  // Fetch real flow data from USGS Water Data API
+  // Fetch real flow data from USGS Water Data API with caching
   getFlowData(gaugeId: string): Observable<FlowData[]> {
+    // Check if we have cached data that's still valid
+    const cached = this.flowDataCache[gaugeId];
+    if (cached && (Date.now() - cached.timestamp) < this.CACHE_TTL_MS) {
+      console.log(`Using cached data for gauge ${gaugeId}`);
+      return of(cached.data);
+    }
+
     // Build USGS API URL with proper monitoring location ID format
     const monitoringLocationId = `USGS_${gaugeId}`;
     const apiUrl = `https://api.waterdata.usgs.gov/ogcapi/v0/collections/continuous/items`;
@@ -61,10 +70,41 @@ export class RiverService {
       .join('&');
 
     return this.http.get<any>(`${apiUrl}?${queryString}`).pipe(
-      map(response => this.parseUSGSResponse(response)),
-      // Fallback to mock data if API fails
-      map(data => data.length > 0 ? data : this.generateMockData()),
-      // Catch errors and return mock data
+      map(response => {
+        console.log(`USGS response for gauge ${gaugeId}:`, response);
+        return this.parseUSGSResponse(response);
+      }),
+      // Fallback to mock data if API fails or returns empty
+      map(data => {
+        console.log(`Parsed data for gauge ${gaugeId}:`, data.length, 'records');
+        const flowData = data.length > 0 ? data : this.generateMockData();
+        // Cache the successful result
+        this.flowDataCache[gaugeId] = {
+          data: flowData,
+          timestamp: Date.now()
+        };
+        if (data.length === 0) {
+          console.log(`Using mock data for gauge ${gaugeId}`);
+        }
+        return flowData;
+      }),
+      // Catch any errors (CORS, network, etc) and return cached data only
+      catchError(error => {
+        console.warn(`Failed to fetch USGS data for gauge ${gaugeId}:`, error);
+        // Return cached data if available, otherwise return mock data
+        if (cached) {
+          console.log(`Returning stale cached data for gauge ${gaugeId}`);
+          return of(cached.data);
+        }
+        // No cached data available - return mock data
+        console.log(`Returning mock data for gauge ${gaugeId} (API failed)`);
+        const mockData = this.generateMockData();
+        this.flowDataCache[gaugeId] = {
+          data: mockData,
+          timestamp: Date.now()
+        };
+        return of(mockData);
+      })
     );
   }
 

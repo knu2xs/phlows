@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, ActivatedRoute } from '@angular/router';
 import { RiverService, River, FlowData, StageStatus } from '../../services/river.service';
@@ -11,7 +11,7 @@ import * as d3 from 'd3';
   templateUrl: './river-detail.component.html',
   styleUrl: './river-detail.component.sass'
 })
-export class RiverDetailComponent implements OnInit {
+export class RiverDetailComponent implements OnInit, OnDestroy {
   river: River | undefined;
   flowData: FlowData[] = [];
   loading = true;
@@ -19,6 +19,7 @@ export class RiverDetailComponent implements OnInit {
   currentStatus: StageStatus = 'runnable';
   currentFlow = 0;
   currentFlowTime: Date | null = null;
+  private resizeTimeout: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -30,6 +31,25 @@ export class RiverDetailComponent implements OnInit {
       const id = params['id'];
       this.loadRiverData(id);
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event): void {
+    // Debounce resize events to avoid excessive redraws
+    if (this.resizeTimeout) {
+      clearTimeout(this.resizeTimeout);
+    }
+    this.resizeTimeout = setTimeout(() => {
+      if (!this.loading && !this.error && this.flowData.length > 0) {
+        this.createChart();
+      }
+    }, 250);
   }
 
   loadRiverData(id: string): void {
@@ -131,7 +151,7 @@ export class RiverDetailComponent implements OnInit {
       .attr('width', width)
       .attr('height', yScale(minBound) - yScale(this.river.runnable.min))
       .attr('fill', '#dc3545')
-      .attr('opacity', 0.1);
+      .attr('opacity', 0.15);
 
     // Runnable Band
     svg.append('rect')
@@ -139,7 +159,7 @@ export class RiverDetailComponent implements OnInit {
       .attr('y', yScale(this.river.runnable.max))
       .attr('width', width)
       .attr('height', yScale(this.river.runnable.min) - yScale(this.river.runnable.max))
-      .attr('fill', '#28a745')
+      .attr('fill', '#198754')
       .attr('opacity', 0.15);
 
     // Too High Band
@@ -149,20 +169,37 @@ export class RiverDetailComponent implements OnInit {
       .attr('width', width)
       .attr('height', yScale(this.river.runnable.max) - yScale(maxBound))
       .attr('fill', '#ffc107')
-      .attr('opacity', 0.1);
+      .attr('opacity', 0.15);
 
     // Line generator
     const line = d3.line<FlowData>()
       .x(d => xScale(new Date(d.timestamp)))
       .y(d => yScale(d.flow));
 
-    // Draw the line path
-    svg.append('path')
-      .datum(this.flowData)
-      .attr('fill', 'none')
-      .attr('stroke', '#00d4ff')
-      .attr('stroke-width', 2.5)
-      .attr('d', line);
+    // Helper function to get color based on flow zone
+    const getFlowColor = (flow: number): string => {
+      if (!this.river) return '#00d4ff'; // Default if river not loaded
+      if (flow < this.river.runnable.min) {
+        return '#dc3545'; // Red - Too Low
+      } else if (flow > this.river.runnable.max) {
+        return '#ffc107'; // Yellow - Too High
+      } else {
+        return '#198754'; // Green - Runnable
+      }
+    };
+
+    // Draw line segments between consecutive points, each colored by the flow zone
+    for (let i = 0; i < this.flowData.length - 1; i++) {
+      const segment = [this.flowData[i], this.flowData[i + 1]];
+      const color = getFlowColor((this.flowData[i].flow + this.flowData[i + 1].flow) / 2);
+      
+      svg.append('path')
+        .datum(segment)
+        .attr('fill', 'none')
+        .attr('stroke', color)
+        .attr('stroke-width', 2.5)
+        .attr('d', line);
+    }
 
     // Add dots for data points
     svg.selectAll('.dot')
@@ -172,8 +209,8 @@ export class RiverDetailComponent implements OnInit {
       .attr('cx', d => xScale(new Date(d.timestamp)))
       .attr('cy', d => yScale(d.flow))
       .attr('r', 3)
-      .attr('fill', '#00d4ff')
-      .attr('opacity', 0.6)
+      .attr('fill', d => getFlowColor(d.flow))
+      .attr('opacity', 0.8)
       .attr('class', 'dot')
       .on('mouseenter', (event: any, d: FlowData) => {
         const tooltip = d3.select('#tooltip');

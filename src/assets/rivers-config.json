@@ -34,7 +34,7 @@
     },
     {
       "id": "usgs_14238050",
-      "name": "East Fork Lewis River",
+      "name": "East Fork Lewis (EFL)",
       "location": "Heisson, WA",
       "gaugeId": "14238050",
       "runnable": { "min": 400, "max": 1800 },

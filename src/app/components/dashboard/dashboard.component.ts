@@ -13,6 +13,7 @@ import { RiverService, River, StageStatus } from '../../services/river.service';
 export class DashboardComponent implements OnInit {
   rivers: River[] = [];
   currentFlows: { [key: string]: number } = {};
+  failedLoads: { [key: string]: boolean } = {};
   loading = true;
   error: string | null = null;
   showOnlyRunnable = false;
@@ -42,6 +43,8 @@ export class DashboardComponent implements OnInit {
           if (data.length > 0) {
             // Get the latest flow reading
             this.currentFlows[river.id] = data[data.length - 1].flow;
+          } else {
+            this.failedLoads[river.id] = true;
           }
           loadedCount++;
           if (loadedCount === this.rivers.length) {
@@ -49,7 +52,9 @@ export class DashboardComponent implements OnInit {
           }
         },
         error: (err: any) => {
+          this.failedLoads[river.id] = true;
           loadedCount++;
+          console.error(`Error loading data for ${river.name}:`, err);
           if (loadedCount === this.rivers.length) {
             this.loading = false;
           }
@@ -59,6 +64,9 @@ export class DashboardComponent implements OnInit {
   }
 
   getStageStatus(river: River): StageStatus {
+    if (this.failedLoads[river.id]) {
+      return 'unknown' as StageStatus;
+    }
     const flow = this.currentFlows[river.id] || 0;
     return this.riverService.getStageStatus(flow, river);
   }
@@ -71,6 +79,8 @@ export class DashboardComponent implements OnInit {
         return 'bg-success';
       case 'tooHigh':
         return 'bg-warning text-dark';
+      case 'unknown':
+        return 'bg-secondary';
       default:
         return 'bg-secondary';
     }
@@ -84,6 +94,8 @@ export class DashboardComponent implements OnInit {
         return 'Runnable';
       case 'tooHigh':
         return 'Too High';
+      case 'unknown':
+        return 'No Data';
       default:
         return 'Unknown';
     }

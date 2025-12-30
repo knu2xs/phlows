@@ -49,7 +49,7 @@
         </div>
         <div class="card-body text-center py-4">
           <div class="display-5 mb-2" [ngClass]="'text-' + (currentStatus === 'runnable' ? 'success' : currentStatus === 'tooHigh' ? 'warning' : 'danger')">
-            {{ currentFlow.toFixed(0) }} cfs
+            {{ currentFlow | number:'1.0-0' }} cfs
           </div>
           <p class="text-muted small mb-3">{{ formatFlowTime() }}</p>
           <span class="badge" [ngClass]="getStatusBadgeClass()">
@@ -72,13 +72,13 @@
               <div class="col">
                 <div class="bg-success bg-opacity-10 border border-success border-opacity-50 p-2 rounded">
                   <small class="d-block text-muted">Min</small>
-                  <div class="h6 mb-0">{{ river.runnable.min }} cfs</div>
+                  <div class="h6 mb-0">{{ river.runnable.min | number:'1.0-0' }} cfs</div>
                 </div>
               </div>
               <div class="col">
                 <div class="bg-success bg-opacity-10 border border-success border-opacity-50 p-2 rounded">
                   <small class="d-block text-muted">Max</small>
-                  <div class="h6 mb-0">{{ river.runnable.max }} cfs</div>
+                  <div class="h6 mb-0">{{ river.runnable.max | number:'1.0-0' }} cfs</div>
                 </div>
               </div>
             </div>
@@ -98,7 +98,7 @@
               <div>
                 <strong>Runnable</strong>
                 <br />
-                <small class="text-muted">{{ river.runnable.min }} - {{ river.runnable.max }} cfs</small>
+                <small class="text-muted">{{ river.runnable.min | number:'1.0-0' }} - {{ river.runnable.max | number:'1.0-0' }} cfs</small>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
               <div>
                 <strong>Too Low</strong>
                 <br />
-                <small class="text-muted">Below {{ river.runnable.min }} cfs</small>
+                <small class="text-muted">Below {{ river.runnable.min | number:'1.0-0' }} cfs</small>
               </div>
             </div>
           </div>
@@ -120,7 +120,7 @@
               <div>
                 <strong>Too High</strong>
                 <br />
-                <small class="text-muted">Above {{ river.runnable.max }} cfs</small>
+                <small class="text-muted">Above {{ river.runnable.max | number:'1.0-0' }} cfs</small>
               </div>
             </div>
           </div>

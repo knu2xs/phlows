@@ -48,7 +48,8 @@
               <h5 class="card-title mb-1">{{ river.name }}</h5>
               <p class="card-subtitle text-muted small mb-2">{{ river.location }}</p>
             </div>
-            <span class="badge" [ngClass]="getStatusBadgeClass(getStageStatus(river))">
+            <span class="badge" [ngClass]="getStatusBadgeClass(getStageStatus(river))"
+              [attr.title]="failedLoads[river.id] ? 'Unable to retrieve data from USGS API' : ''">
               {{ getStatusLabel(getStageStatus(river)) }}
             </span>
           </div>
@@ -59,13 +60,13 @@
             <div class="col-6">
               <div class="text-center p-2 bg-dark rounded">
                 <small class="d-block text-muted">Current Flow</small>
-                <div class="h5 mb-0">{{ getCurrentFlow(river) }} cfs</div>
+                <div class="h5 mb-0">{{ (currentFlows[river.id] || 0) | number:'1.0-0' }} cfs</div>
               </div>
             </div>
             <div class="col-6">
               <div class="text-center p-2 bg-dark rounded">
                 <small class="d-block text-muted">Runnable Range</small>
-                <div class="h6 mb-0">{{ river.runnable.min }} - {{ river.runnable.max }}</div>
+                <div class="h6 mb-0">{{ river.runnable.min | number:'1.0-0' }} - {{ river.runnable.max | number:'1.0-0' }}</div>
               </div>
             </div>
           </div>
@@ -74,8 +75,8 @@
             <div
               class="progress-bar"
               [style.width.%]="
-                ((currentFlows[river.id] || river.runnable.min - river.minRange) - river.minRange) /
-                (river.maxRange - river.minRange) * 100
+                ((currentFlows[river.id] || river.runnable.min) - river.runnable.min) /
+                (river.runnable.max - river.runnable.min) * 100
               "
               [style.background-color]="'var(--bs-' + (getStageStatus(river) === 'runnable' ? 'success' : getStageStatus(river) === 'tooHigh' ? 'warning' : 'danger') + ')'"
             ></div>
