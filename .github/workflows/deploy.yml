@@ -27,5 +27,5 @@ jobs:
           build_configuration: production
           base_href: /phlows/
           deploy_branch: gh-pages
-          angular_dist_build_folder: dist/phlows
+          angular_dist_build_folder: dist/phlows/browser
           skip_build: false
