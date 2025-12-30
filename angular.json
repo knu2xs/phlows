@@ -38,6 +38,10 @@
           "configurations": {
             "production": {
               "baseHref": "/phlows/",
+              "inlineStyleLanguage": "sass",
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -49,8 +53,7 @@
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
                 }
-              ],
-              "outputHashing": "all"
+              ]
             },
             "development": {
               "optimization": false,
