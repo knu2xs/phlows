@@ -37,7 +37,7 @@
           },
           "configurations": {
             "production": {
-              "baseHref": "/phlows/",
+              "baseHref": "/",
               "inlineStyleLanguage": "sass",
               "outputHashing": "all",
               "optimization": true,

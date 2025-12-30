@@ -1,12 +1,12 @@
 {
   "routes": [
     {
-      "route": "/phlows/*.{css,js,ico,json}",
-      "rewrite": "/phlows/$1"
+      "route": "*.{css,js,ico,json}",
+      "serve": "/$0"
     },
     {
-      "route": "/phlows/*",
-      "rewrite": "/index.html",
+      "route": "/*",
+      "serve": "/index.html",
       "statusCode": 200
     }
   ],
