@@ -86,6 +86,22 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  getProgressBarColor(river: River): string {
+    const status = this.getStageStatus(river);
+    switch (status) {
+      case 'tooLow':
+        return 'var(--bs-danger)'; // Red
+      case 'runnable':
+        return 'var(--bs-success)'; // Green
+      case 'tooHigh':
+        return 'var(--bs-warning)'; // Yellow
+      case 'unknown':
+        return 'var(--bs-secondary)'; // Gray
+      default:
+        return 'var(--bs-secondary)';
+    }
+  }
+
   getStatusLabel(status: StageStatus): string {
     switch (status) {
       case 'tooLow':
