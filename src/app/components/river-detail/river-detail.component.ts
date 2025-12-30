@@ -102,9 +102,9 @@ export class RiverDetailComponent implements OnInit {
     const minFlow = Math.min(...flowValues);
     const maxFlow = Math.max(...flowValues);
     
-    // Start with 10% extension of river ranges
-    let minBound = this.river.minRange * 0.9;
-    let maxBound = this.river.maxRange * 1.1;
+    // Use runnable range as base with 20% padding
+    let minBound = this.river.runnable.min * 0.8;
+    let maxBound = this.river.runnable.max * 1.2;
     
     // Adjust if flows exceed the bounds
     if (minFlow < minBound) {
