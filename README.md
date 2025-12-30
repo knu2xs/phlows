@@ -5,10 +5,15 @@ A real-time river flow dashboard built with Angular that displays current flow d
 ## Features
 
 ✨ **Real-Time Flow Data** - Integrates with USGS Water Data OGC API for current flow readings
+
 📊 **48-Hour Flow Graphs** - Interactive D3.js charts showing flow trends with color-coded zones
+
 🎨 **Status Indicators** - Visual feedback showing if rivers are too low, runnable, or too high
+
 💾 **Smart Caching** - 5-minute cache TTL reduces API calls and improves performance
+
 📱 **Responsive Design** - Bootstrap 5 dark theme works on desktop and mobile
+
 🌐 **SPA Routing** - Fast navigation between dashboard and river detail views
 
 ## Tech Stack
