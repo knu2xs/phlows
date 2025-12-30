@@ -5,8 +5,6 @@
       "name": "South Platte River at Denver",
       "location": "Denver, CO",
       "gaugeId": "06752000",
-      "minRange": 1000,
-      "maxRange": 3000,
       "runnable": { "min": 1500, "max": 2500 },
       "description": "Popular paddling destination through downtown Denver"
     },
@@ -15,8 +13,6 @@
       "name": "Colorado River near Granby",
       "location": "Granby, CO",
       "gaugeId": "09058000",
-      "minRange": 500,
-      "maxRange": 2500,
       "runnable": { "min": 1000, "max": 2000 },
       "description": "Mountain river with consistent flow"
     },
@@ -25,8 +21,6 @@
       "name": "Colorado River near Palisade",
       "location": "Palisade, CO",
       "gaugeId": "09085000",
-      "minRange": 1000,
-      "maxRange": 4000,
       "runnable": { "min": 1500, "max": 3000 },
       "description": "Scenic canyon paddling section"
     },
@@ -35,8 +29,6 @@
       "name": "Arkansas River at Canon City",
       "location": "Canon City, CO",
       "gaugeId": "07083000",
-      "minRange": 500,
-      "maxRange": 3000,
       "runnable": { "min": 800, "max": 2500 },
       "description": "Popular commercial rafting and paddling section"
     },
@@ -45,9 +37,7 @@
       "name": "East Fork Lewis River",
       "location": "Heisson, WA",
       "gaugeId": "14238050",
-      "minRange": 400,
-      "maxRange": 2500,
-      "runnable": { "min": 600, "max": 1800 },
+      "runnable": { "min": 400, "max": 1800 },
       "description": "Classic Northwest whitewater with iconic waterfalls and technical rapids"
     },
         {
@@ -55,8 +45,6 @@
       "name": "Tilton",
       "location": "Cinebar, WA",
       "gaugeId": "14236200",
-      "minRange": 0,
-      "maxRange": 8000,
       "runnable": { "min": 400, "max": 4000 },
       "description": "Incredible whitewater and scenery with nobody ever on it"
     }
