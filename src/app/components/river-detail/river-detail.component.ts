@@ -18,6 +18,7 @@ export class RiverDetailComponent implements OnInit {
   error: string | null = null;
   currentStatus: StageStatus = 'runnable';
   currentFlow = 0;
+  currentFlowTime: Date | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,6 +57,7 @@ export class RiverDetailComponent implements OnInit {
         this.flowData = data;
         if (this.river && data.length > 0) {
           this.currentFlow = data[data.length - 1].flow;
+          this.currentFlowTime = data[data.length - 1].timestamp;
           this.currentStatus = this.riverService.getStageStatus(this.currentFlow, this.river);
         }
         this.loading = false;
@@ -303,5 +305,15 @@ export class RiverDetailComponent implements OnInit {
       default:
         return 'Unknown';
     }
+  }
+
+  formatFlowTime(): string {
+    if (!this.currentFlowTime) return '';
+    const date = new Date(this.currentFlowTime);
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = date.toLocaleString('en-US', { month: 'short' });
+    return `${hours}:${minutes} ${day} ${month}`;
   }
 }

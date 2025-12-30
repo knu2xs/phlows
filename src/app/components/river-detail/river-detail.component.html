@@ -51,6 +51,7 @@
           <div class="display-5 mb-2" [ngClass]="'text-' + (currentStatus === 'runnable' ? 'success' : currentStatus === 'tooHigh' ? 'warning' : 'danger')">
             {{ currentFlow.toFixed(0) }} cfs
           </div>
+          <p class="text-muted small mb-3">{{ formatFlowTime() }}</p>
           <span class="badge" [ngClass]="getStatusBadgeClass()">
             {{ getStatusLabel() }}
           </span>
