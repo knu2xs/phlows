@@ -1,14 +1,17 @@
 {
   "routes": [
     {
-      "route": "/*",
+      "route": "/phlows/*.{css,js,ico,json}",
+      "serve": "/phlows/$1"
+    },
+    {
+      "route": "/phlows/*",
       "serve": "/index.html",
       "statusCode": 200
     }
   ],
   "navigationFallback": {
-    "rewrite": "/index.html",
-    "exclude": ["*.{css,scss,js,png,gif,ico,jpg,jpeg,svg}"]
+    "rewrite": "/index.html"
   },
   "mimeTypes": {
     ".json": "application/json"
