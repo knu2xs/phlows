@@ -47,6 +47,14 @@
       "gaugeId": "14236200",
       "runnable": { "min": 400, "max": 4000 },
       "description": "Incredible whitewater and scenery with nobody ever on it"
+    },
+    {
+      "id": "usgs_14237500",
+      "name": "Canyon Creek of the Lewis",
+      "location": "Heisson, WA",
+      "gaugeId": "14237500",
+      "runnable": { "min": 800, "max": 2500 },
+      "description": "Classic whitewater creek with technical rapids and scenic canyon views"
     }
   ]
 }
