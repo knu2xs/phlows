@@ -30,7 +30,7 @@ export class RiverService {
   constructor(private http: HttpClient) {}
 
   getRivers(): Observable<River[]> {
-    return this.http.get<{ rivers: River[] }>('assets/rivers-config.json')
+    return this.http.get<{ rivers: River[] }>('/assets/rivers-config.json')
       .pipe(
         map(data => data.rivers)
       );
